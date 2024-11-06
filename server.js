@@ -17,7 +17,7 @@ app.use(express.json()); // Parse JSON bodies
 
 // Define routes
 app.use("/api", authRoutes);
-app.use("/api/healthData", healthDataRoutes);
+// app.use("/api/healthData", healthDataRoutes);
 
 app.use('/src/assets/doctorProfile', express.static('src/assets/doctorProfile'));
 app.use('/src/assets', express.static('src/assets'));
