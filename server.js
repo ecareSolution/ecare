@@ -7,16 +7,17 @@ require('dotenv').config();
 
 const app = express();
 
-// Enable CORS for all routes
-app.use(cors());
-
-// Middleware
+// Enable CORS for all origins or set specific origin
+app.use(cors({
+  origin: '*', // Adjust to specific Netlify URL if preferred
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 app.use(express.json()); // Parse JSON bodies
 
-// Routes
-app.use("/api", authRoutes); // Use the routes
-// app.use('/api/appointments', appointmentRoutes);
-// app.use("/healthData",healthDataRoutes);
+// Define routes
+app.use("/api", authRoutes);
+app.use("/api/healthData", healthDataRoutes);
 
 app.use('/src/assets/doctorProfile', express.static('src/assets/doctorProfile'));
 app.use('/src/assets', express.static('src/assets'));
@@ -24,11 +25,7 @@ app.use('/src/assets', express.static('src/assets'));
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-// Connect to MongoDB
 mongoose
-  .connect(process.env.MONGO_URI, {
-    // useNewUrlParser: true,
-    // useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.error("MongoDB connection error:", err));
